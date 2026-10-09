@@ -302,6 +302,11 @@ input:focus, select:focus {
     border-color: var(--accent);
 }
 
+select option {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
 button {
     background: linear-gradient(90deg, var(--accent), var(--accent-2));
     color: #fff;
