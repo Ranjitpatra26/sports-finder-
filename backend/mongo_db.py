@@ -98,7 +98,7 @@ class MongoDB:
             query["sport"] = {"$regex": f"^{sport}$", "$options": "i"}
         return list(self.db.tournaments.find(query).sort("date", ASCENDING))
 
-    def create_tournament(self, name, sport, date_str, entry_fee, mode, latitude, longitude,
+    def create_tournament(self, name, sport, date, entry_fee, mode, latitude, longitude,
                           organizer_id=None, venue_name=None, venue_address=None,
                           organizer_phone=None, organizer_verified=False):
         t_id = self.get_next_sequence("tournaments")
@@ -107,7 +107,7 @@ class MongoDB:
             "id": t_id,
             "name": name,
             "sport": sport,
-            "date": date_str,
+            "date": date,
             "entry_fee": float(entry_fee),
             "mode": mode,
             "latitude": float(latitude) if latitude is not None else None,

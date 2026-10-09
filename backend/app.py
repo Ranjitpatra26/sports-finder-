@@ -1208,7 +1208,7 @@ def create_tournament():
         t_doc = mongo.create_tournament(
             name=name,
             sport=sport,
-            date_str=date_str,
+            date=date_str,
             entry_fee=entry_fee,
             mode=mode,
             latitude=latitude,

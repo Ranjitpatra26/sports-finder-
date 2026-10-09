@@ -8,7 +8,7 @@ class Config:
     # Set environment variable MONGO_URI or place your full Atlas connection string here:
     MONGO_URI = os.environ.get(
         "MONGO_URI",
-        "mongodb+srv://mwarandekar_db_user:d6WvtsaMFD1Pvfly@<CLUSTER_HOST>/sports_platform?retryWrites=true&w=majority"
+        "mongodb+srv://mwarandekar_db_user:d6WvtsaMFD1Pvfly@cluster0.2ff9hoo.mongodb.net/sports_platform?retryWrites=true&w=majority&appName=Cluster0"
     )
     
     # SQL Fallback URI
