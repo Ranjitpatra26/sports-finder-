@@ -1546,3 +1546,41 @@ renderTournaments = function wrappedRenderTournaments(list) {
     _existingRenderTournaments(list);
     enableTournamentCardNavigation(list);
 };
+
+// Ball spread animation on button click
+document.addEventListener('click', function(e) {
+    if (e.target.closest('button')) {
+        createBallExplosion(e.clientX, e.clientY);
+    }
+});
+
+function createBallExplosion(x, y) {
+    const balls = ['⚽', '🏀', '🎾', '🏐', '⚾', '🥎', '🎱', '🏏'];
+    for (let i = 0; i < 8; i++) {
+        const ball = document.createElement('div');
+        ball.textContent = balls[Math.floor(Math.random() * balls.length)];
+        ball.style.position = 'fixed';
+        ball.style.left = (x - 12) + 'px';
+        ball.style.top = (y - 12) + 'px';
+        ball.style.fontSize = '24px';
+        ball.style.pointerEvents = 'none';
+        ball.style.zIndex = '9999';
+        ball.style.transition = 'all 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+        document.body.appendChild(ball);
+
+        // Force reflow
+        ball.getBoundingClientRect();
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 60 + Math.random() * 120;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+
+        ball.style.transform = `translate(${tx}px, ${ty}px) rotate(${Math.random() * 360}deg) scale(0)`;
+        ball.style.opacity = '0';
+
+        setTimeout(() => {
+            ball.remove();
+        }, 600);
+    }
+}
