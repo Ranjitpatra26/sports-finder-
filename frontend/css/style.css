@@ -27,10 +27,22 @@ body {
     color: var(--text);
     letter-spacing: 0.3px;
     line-height: 1.6;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    background-size: 400% 400%;
-    animation: bgShift 20s infinite alternate ease-in-out;
+    background-color: #0f2027; /* Fallback */
     overflow-x: hidden;
+}
+
+.bg-video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -2;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    opacity: 0.8;
 }
 
 @keyframes bgShift {
