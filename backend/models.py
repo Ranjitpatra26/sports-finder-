@@ -32,6 +32,7 @@ class Tournament(db.Model):
     venue_name = db.Column(db.String(255))
     venue_address = db.Column(db.Text)
     organizer_phone = db.Column(db.String(32))
+    youtube_link = db.Column(db.String(500))
     organizer_verified = db.Column(db.Boolean, nullable=False, default=False)
 
 

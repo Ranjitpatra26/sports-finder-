@@ -1144,6 +1144,7 @@ def get_tournaments():
                 'date': t['date'],
                 'entry_fee': float(t['entry_fee']),
                 'mode': t['mode'],
+                'youtube_link': t.get('youtube_link'),
                 'latitude': t['latitude'],
                 'longitude': t['longitude'],
             })
@@ -1168,6 +1169,7 @@ def get_tournaments():
                     'date': tournament.date.isoformat(),
                     'entry_fee': float(tournament.entry_fee),
                     'mode': tournament.mode,
+                    'youtube_link': tournament.youtube_link,
                     'latitude': tournament.latitude,
                     'longitude': tournament.longitude,
                 }
@@ -1217,6 +1219,7 @@ def create_tournament():
             venue_name=(data.get('venue_name') or '').strip() or None,
             venue_address=(data.get('venue_address') or '').strip() or None,
             organizer_phone=(data.get('organizer_phone') or '').strip() or None,
+            youtube_link=(data.get('youtube_link') or '').strip() or None,
             organizer_verified=bool(data.get('organizer_verified', False))
         )
         return jsonify({'message': 'Tournament created', 'id': t_doc['id']}), 201
@@ -1241,6 +1244,7 @@ def create_tournament():
                 venue_name=(data.get('venue_name') or '').strip() or None,
                 venue_address=(data.get('venue_address') or '').strip() or None,
                 organizer_phone=(data.get('organizer_phone') or '').strip() or None,
+                youtube_link=(data.get('youtube_link') or '').strip() or None,
                 organizer_verified=bool(data.get('organizer_verified', False)),
             )
         except ValueError:
@@ -1270,6 +1274,7 @@ def get_tournament_details(tournament_id):
             'date': t['date'],
             'entry_fee': float(t['entry_fee']),
             'mode': t['mode'],
+            'youtube_link': t.get('youtube_link'),
             'latitude': t['latitude'],
             'longitude': t['longitude'],
             'venue_name': t.get('venue_name') or t['name'],
@@ -1292,6 +1297,7 @@ def get_tournament_details(tournament_id):
             'date': tournament.date.isoformat(),
             'entry_fee': float(tournament.entry_fee),
             'mode': tournament.mode,
+            'youtube_link': tournament.youtube_link,
             'latitude': tournament.latitude,
             'longitude': tournament.longitude,
             'venue_name': tournament.venue_name or tournament.name,

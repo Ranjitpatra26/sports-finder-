@@ -100,7 +100,7 @@ class MongoDB:
 
     def create_tournament(self, name, sport, date, entry_fee, mode, latitude, longitude,
                           organizer_id=None, venue_name=None, venue_address=None,
-                          organizer_phone=None, organizer_verified=False):
+                          organizer_phone=None, youtube_link=None, organizer_verified=False):
         t_id = self.get_next_sequence("tournaments")
         doc = {
             "_id": t_id,
@@ -116,6 +116,7 @@ class MongoDB:
             "venue_name": venue_name or name,
             "venue_address": venue_address or "Address not provided",
             "organizer_phone": organizer_phone,
+            "youtube_link": youtube_link,
             "organizer_verified": bool(organizer_verified)
         }
         self.db.tournaments.insert_one(doc)

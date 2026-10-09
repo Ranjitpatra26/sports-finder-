@@ -158,9 +158,12 @@ function cardTournament(t, index) {
     const distanceText = t.distance === null || t.distance === undefined ? 'Distance unavailable' : `${t.distance} km away`;
     const entryFeeText = t.entry_fee === 0 ? 'FREE' : `\u20B9${t.entry_fee}`;
 
+    const liveLink = t.youtube_link ? `<a href="${t.youtube_link}" target="_blank" onclick="event.stopPropagation();" style="color: var(--danger); font-weight: bold; margin-bottom: 8px; display: inline-block;">📺 Watch Live</a>` : '';
+
     return `
         <div class="card fade-in" style="animation-delay:${Math.min(index * 0.08, 0.5)}s" onclick="openTournamentDetails(event, ${t.id})">
             <h3>${t.name}</h3>
+            ${liveLink}
             <p><strong>${t.sport}</strong> | ${t.mode}</p>
             <p>Location: ${distanceText}</p>
             <p>Date: ${t.date}</p>
@@ -587,6 +590,7 @@ async function createTournament(e) {
         mode: document.getElementById('t-mode').value,
         venue_address: document.getElementById('t-location').value,
         organizer_phone: document.getElementById('t-contact').value,
+        youtube_link: document.getElementById('t-youtube').value,
         latitude: !Number.isNaN(latVal) ? latVal : (currentPosition ? currentPosition.lat : DEFAULT_CENTER.lat),
         longitude: !Number.isNaN(lngVal) ? lngVal : (currentPosition ? currentPosition.lng : DEFAULT_CENTER.lng),
     };

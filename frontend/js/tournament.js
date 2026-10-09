@@ -138,6 +138,15 @@ async function loadTournamentDetails() {
     venueAddressEl.textContent = data.venue_address || '-';
     mapsLinkEl.href = createGoogleMapsUrlForVenue(data.latitude, data.longitude);
 
+    const liveStreamContainer = document.getElementById('live-stream-container');
+    const youtubeLinkEl = document.getElementById('youtube-link');
+    if (data.youtube_link) {
+        liveStreamContainer.classList.remove('hidden');
+        youtubeLinkEl.href = data.youtube_link;
+    } else {
+        liveStreamContainer.classList.add('hidden');
+    }
+
     renderVenueMap(data.latitude, data.longitude);
 }
 
