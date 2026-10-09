@@ -101,6 +101,13 @@ function switchTab(tabId) {
     if (targetBtn) {
         targetBtn.classList.add('active');
     }
+
+    setTimeout(() => {
+        if (typeof discoverMap !== 'undefined' && discoverMap) discoverMap.invalidateSize();
+        if (typeof organizerMap !== 'undefined' && organizerMap) organizerMap.invalidateSize();
+        if (typeof turfMap !== 'undefined' && turfMap) turfMap.invalidateSize();
+        if (typeof turfOwnerFormMap !== 'undefined' && turfOwnerFormMap) turfOwnerFormMap.invalidateSize();
+    }, 100);
 }
 
 function updateAuthUI() {
@@ -169,10 +176,10 @@ function filterTournaments(tournaments) {
     const feeFilter = feeFilterSelect.value;
 
     return tournaments.filter(tournament => {
-        const matchesSearch = tournament.name.toLowerCase().includes(searchTerm) || 
-                              tournament.sport.toLowerCase().includes(searchTerm);
+        const matchesSearch = tournament.name.toLowerCase().includes(searchTerm) ||
+            tournament.sport.toLowerCase().includes(searchTerm);
         const matchesSport = !sportFilter || tournament.sport.toLowerCase() === sportFilter.toLowerCase();
-        
+
         let matchesFee = true;
         if (feeFilter === 'free') {
             matchesFee = tournament.entry_fee === 0;
@@ -193,7 +200,7 @@ function filterTournaments(tournaments) {
 function renderTournaments(list) {
     const container = document.getElementById('tournament-list');
     const filteredList = filterTournaments(list);
-    
+
     if (filteredList.length === 0) {
         container.innerHTML = '<p class="hint">No tournaments found matching your criteria.</p>';
         return;
@@ -345,7 +352,7 @@ function initTurfOwnerFormMap() {
     }).addTo(turfOwnerFormMap);
 
     turfOwnerFormMarker = L.marker([initialLat, initialLng], { draggable: true }).addTo(turfOwnerFormMap);
-    
+
     function updateInputsFromMarker(lat, lng, label = '') {
         document.getElementById('turf-owner-lat').value = lat.toFixed(6);
         document.getElementById('turf-owner-lng').value = lng.toFixed(6);
@@ -375,13 +382,13 @@ function initTurfOwnerFormMap() {
             defaultMarkGeocode: false,
             placeholder: 'Search location (e.g. Pune Railway Station)...',
         })
-        .on('markgeocode', (e) => {
-            const center = e.geocode.center;
-            turfOwnerFormMap.setView(center, 14);
-            turfOwnerFormMarker.setLatLng(center);
-            updateInputsFromMarker(center.lat, center.lng, e.geocode.name || '');
-        })
-        .addTo(turfOwnerFormMap);
+            .on('markgeocode', (e) => {
+                const center = e.geocode.center;
+                turfOwnerFormMap.setView(center, 14);
+                turfOwnerFormMarker.setLatLng(center);
+                updateInputsFromMarker(center.lat, center.lng, e.geocode.name || '');
+            })
+            .addTo(turfOwnerFormMap);
     }
 }
 
@@ -882,15 +889,15 @@ async function loadSlotsForDate(turfId, dateStr) {
         container.innerHTML = `
             <div class="slots-grid">
                 ${data.slots.map(s => {
-                    const statusClass = s.status === 'available' ? 'available' : 'booked';
-                    const disabled = s.status !== 'available' ? 'disabled' : '';
-                    return `
+            const statusClass = s.status === 'available' ? 'available' : 'booked';
+            const disabled = s.status !== 'available' ? 'disabled' : '';
+            return `
                         <button class="slot-btn ${statusClass}" ${disabled} onclick="selectTurfSlot('${s.time_slot}', ${s.price}, this)">
                             ${s.time_slot}<br/>
                             <small>${s.status.toUpperCase()}</small>
                         </button>
                     `;
-                }).join('')}
+        }).join('')}
             </div>
         `;
 
@@ -1341,7 +1348,7 @@ async function fetchAndRenderCaptainRequests(teamId) {
                 ` : ''}
             </li>
         `).join('') + '</ul>';
-    } catch (_) {}
+    } catch (_) { }
 }
 
 async function respondTeamRequest(requestId, status) {
