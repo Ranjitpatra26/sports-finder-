@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/style.css?v=9" rel="stylesheet">
+</head>
+<body>
+    <div id="particles" aria-hidden="true"></div>
+    <div class="bg-motion" aria-hidden="true">
+        <span class="sports-equipment cricket-ball">&#127951;</span>
+        <span class="sports-equipment football">&#9917;</span>
+        <span class="sports-equipment basketball">&#127936;</span>
+        <span class="sports-equipment tennis-ball">&#127934;</span>
+        <span class="sports-equipment baseball">&#9918;</span>
+        <span class="sports-equipment volleyball">&#127952;</span>
+        <span class="sports-equipment cricket-bat">&#127951;</span>
+        <span class="sports-equipment football-gloves">&#127951;</span>
+    </div>
+
+    <div class="app-shell fade-in">
+        <aside class="sidebar panel slide-up">
+            <h1>Sports Platform</h1>
+            <p class="sub">Play local. Compete smarter.</p>
+
+            <nav class="nav-tabs">
+                <button class="tab-btn active" data-tab="discover-view">Discover Tournaments</button>
+                <button class="tab-btn" data-tab="turfs-view">Turf Finder & Booking</button>
+                <button class="tab-btn" data-tab="teams-view">Find a Team</button>
+                <button class="tab-btn" data-tab="auth-view">Account</button>
+                <button class="tab-btn" data-tab="registrations-view">My Bookings & Activity</button>
+                <button class="tab-btn hidden" id="organizer-tab-btn" data-tab="organizer-view">Organizer Hub</button>
+                <button class="tab-btn hidden" id="turf-owner-tab-btn" data-tab="turf-owner-view">Turf Owner Hub</button>
+            </nav>
+
+            <div class="status-wrap">
+                <p id="auth-status">Not logged in</p>
+                <button id="logout-btn" class="ghost hidden">Logout</button>
+            </div>
+        </aside>
+
+        <main class="content-stack">
+            <section class="topbar panel slide-up">
+                <div>
+                    <h2>Sports & Turf Operations Network</h2>
+                    <p>Discover grounds, book hourly slots, find teams, and manage tournaments.</p>
+                </div>
+                <p id="message" class="message"></p>
+            </section>
+
+            <!-- 1. DISCOVER TOURNAMENTS VIEW -->
+            <section class="view panel active slide-up" id="discover-view">
+                <div class="view-head">
+                    <h3>Nearby Tournaments</h3>
+                    <div class="controls">
+                        <input type="text" id="discover-location" placeholder="Search location">
+                        <input type="number" id="discover-lat" placeholder="Latitude" step="0.000001">
+                        <input type="number" id="discover-lng" placeholder="Longitude" step="0.000001">
+                        <button id="apply-discover-coords" type="button" class="ghost">Set Coordinates</button>
+                        <label for="radius">Radius</label>
+                        <select id="radius">
+                            <option value="10">10 km</option>
+                            <option value="25">25 km</option>
+                            <option value="50" selected>50 km</option>
+                            <option value="100">100 km</option>
+                        </select>
+                        <button id="locate-btn">Use My Location</button>
+                    </div>
+                </div>
+                
+                <div class="search-filters">
+                    <input type="text" id="tournament-search" placeholder="Search tournaments by name or sport...">
+                    <select id="sport-filter">
+                        <option value="">All Sports</option>
+                        <option value="basketball">Basketball</option>
+                        <option value="football">Football</option>
+                        <option value="soccer">Soccer</option>
+                        <option value="cricket">Cricket</option>
+                        <option value="tennis">Tennis</option>
+                        <option value="volleyball">Volleyball</option>
+                    </select>
+                    <select id="fee-filter">
+                        <option value="">All Entry Fees</option>
+                        <option value="free">Free</option>
+                        <option value="0-500">Under &#8377;500</option>
+                        <option value="500-1000">&#8377;500-&#8377;1000</option>
+                        <option value="1000-2000">&#8377;1000-&#8377;2000</option>
+                        <option value="2000+">Over &#8377;2000</option>
+                    </select>
+                    <button id="clear-filters" class="ghost">Clear Filters</button>
+                </div>
+                
+                <div id="discover-map" class="map-canvas"></div>
+                <div id="tournament-list" class="cards"></div>
+            </section>
+
+            <!-- 2. EXCLUSIVE FEATURE: TURF FINDER & BOOKING VIEW -->
+            <section class="view panel slide-up" id="turfs-view">
+                <div class="view-head">
+                    <div>
+                        <h3>Turf Finder & Slot Booking</h3>
+                        <p class="sub">Discover football turfs, cricket arenas & sports grounds with live slot availability calendar.</p>
+                    </div>
+                    <button id="refresh-turfs-btn" class="ghost" type="button">Refresh Turfs</button>
+                </div>
+
+                <div class="search-filters">
+                    <input type="text" id="turf-search-input" placeholder="Search area, turf name or location...">
+                    <select id="turf-sport-filter">
+                        <option value="">All Sports</option>
+                        <option value="football">Football</option>
+                        <option value="cricket">Cricket</option>
+                        <option value="soccer">Soccer</option>
+                        <option value="tennis">Tennis</option>
+                    </select>
+                    <select id="turf-facility-filter">
+                        <option value="">All Facilities</option>
+                        <option value="floodlights">Floodlights</option>
+                        <option value="parking">Parking</option>
+                        <option value="changing room">Changing Room</option>
+                        <option value="artificial turf">Artificial Turf</option>
+                    </select>
+                    <input type="number" id="turf-max-price" placeholder="Max &#8377;/hr" min="0" step="100">
+                </div>
+
+                <div id="turf-map" class="map-canvas"></div>
+                <div id="turf-list" class="cards margin-top"></div>
+
+                <!-- TURF SLOT BOOKING MODAL -->
+                <div id="turf-booking-modal" class="modal-overlay hidden">
+                    <div class="modal-content panel">
+                        <button class="close-modal-btn" onclick="closeTurfBookingModal()">&times;</button>
+                        <div id="turf-modal-details"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. FIND A TEAM VIEW -->
+            <section class="view panel slide-up" id="teams-view">
+                <div class="view-head">
+                    <div>
+                        <h3>Find a Team (Individual Players & Squads)</h3>
+                        <p class="sub">Individual player? Request to join an active team or create your own team!</p>
+                    </div>
+                    <button id="refresh-teams-btn" class="ghost" type="button">Refresh</button>
+                </div>
+
+                <div class="team-finder-layout">
+                    <div class="team-finder-main">
+                        <h4>Teams Seeking Teammates</h4>
+                        <div class="search-filters">
+                            <input type="text" id="team-search-input" placeholder="Search team name or sport...">
+                            <select id="team-sport-select">
+                                <option value="">All Sports</option>
+                                <option value="football">Football</option>
+                                <option value="soccer">Soccer</option>
+                                <option value="basketball">Basketball</option>
+                                <option value="cricket">Cricket</option>
+                            </select>
+                        </div>
+                        <div id="team-list" class="cards"></div>
+                    </div>
+
+                    <div class="team-finder-side">
+                        <form id="create-team-form" class="panel-box">
+                            <h4>Post / Create a Team</h4>
+                            <input type="text" id="team-name" placeholder="Team Name" required>
+                            <input type="text" id="team-sport" placeholder="Sport (e.g. Football)" required>
+                            <select id="team-skill" required>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate" selected>Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                            <button type="submit">Create Team</button>
+                        </form>
+
+                        <div class="panel-box margin-top">
+                            <h4>My Team Requests & Squads</h4>
+                            <div id="my-teams-container">
+                                <p class="hint">Log in to view your team requests.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. ACCOUNT ACCESS VIEW -->
+            <section class="view panel slide-up" id="auth-view">
+                <h3>Account Access</h3>
+                <div class="auth-grid">
+                    <form id="register-form">
+                        <h4>Create Account</h4>
+                        <input type="text" id="reg-name" placeholder="Name" required>
+                        <input type="email" id="reg-email" placeholder="Email" required>
+                        <input type="password" id="reg-password" placeholder="Password" required>
+                        <select id="reg-role" required>
+                            <option value="player">Player</option>
+                            <option value="organizer">Tournament Organizer</option>
+                            <option value="turf_owner">Turf Owner</option>
+                        </select>
+                        <button type="submit">Register Account</button>
+                    </form>
+
+                    <form id="login-form">
+                        <h4>Login</h4>
+                        <input type="email" id="login-email" placeholder="Email" required>
+                        <input type="password" id="login-password" placeholder="Password" required>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 5. MY REGISTRATIONS & TURF BOOKINGS VIEW -->
+            <section class="view panel slide-up" id="registrations-view">
+                <div class="view-head">
+                    <h3>My Bookings & Activity</h3>
+                    <button id="load-registrations-btn" class="ghost">Refresh Activity</button>
+                </div>
+
+                <h4>Turf Bookings</h4>
+                <div id="my-turf-bookings-list" class="cards margin-bottom"></div>
+
+                <h4>Tournament Registrations</h4>
+                <div id="registration-list" class="cards"></div>
+            </section>
+
+            <!-- 6. ORGANIZER HUB VIEW -->
+            <section class="view panel slide-up" id="organizer-view">
+                <h3>Create Tournament</h3>
+                <form id="create-tournament-form" class="create-grid">
+                    <input type="text" id="t-name" placeholder="Tournament name" required>
+                    <input type="text" id="t-venue-name" placeholder="Venue name" required>
+                    <input type="text" id="t-sport" placeholder="Sport" required>
+                    <input type="date" id="t-date" required>
+                    <input type="number" id="t-fee" placeholder="Entry fee" min="0" step="0.01" required>
+                    <select id="t-mode" required>
+                        <option value="individual">Individual</option>
+                        <option value="team">Team</option>
+                    </select>
+                    <input type="text" id="t-location" placeholder="Venue address / search location" required>
+                    <input type="text" id="t-contact" placeholder="Organizer contact number" required>
+                    <input type="number" id="t-lat" placeholder="Latitude" step="0.000001">
+                    <input type="number" id="t-lng" placeholder="Longitude" step="0.000001">
+                    <p id="t-location-coords" class="coord-hint">No location selected</p>
+                    <div class="organizer-map-toolbar">
+                        <button type="button" id="organizer-map-fullscreen" class="ghost">Fullscreen Map</button>
+                    </div>
+                    <div id="organizer-map" class="map-canvas"></div>
+                    <button type="submit">Publish Tournament</button>
+                </form>
+                <div class="organizer-registrations">
+                    <div class="view-head">
+                        <h3>Who Registered</h3>
+                        <button id="load-organizer-registrations-btn" class="ghost" type="button">Refresh</button>
+                    </div>
+                    <div id="organizer-registration-list" class="cards"></div>
+                </div>
+            </section>
+
+            <!-- 7. EXCLUSIVE FEATURE: TURF OWNER DASHBOARD VIEW -->
+            <section class="view panel slide-up" id="turf-owner-view">
+                <div class="view-head">
+                    <div>
+                        <h3>Turf Owner Dashboard</h3>
+                        <p class="sub">Manage your sports venues, live hourly slots, customer bookings & revenue analytics.</p>
+                    </div>
+                    <button id="refresh-owner-dashboard-btn" class="ghost" type="button">Refresh Dashboard</button>
+                </div>
+
+                <div class="stats-grid margin-bottom">
+                    <div class="stat-card">
+                        <span class="stat-label">Total Revenue</span>
+                        <h4 id="owner-total-revenue">&#8377;0</h4>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Confirmed Bookings</span>
+                        <h4 id="owner-confirmed-bookings">0</h4>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Managed Venues</span>
+                        <h4 id="owner-managed-turfs">0</h4>
+                    </div>
+                </div>
+
+                <div class="team-finder-layout">
+                    <div class="team-finder-main">
+                        <h4>Manage Grounds & Incoming Customer Bookings</h4>
+                        <div id="owner-bookings-list" class="cards"></div>
+                    </div>
+
+                    <div class="team-finder-side">
+                        <form id="register-turf-form" class="panel-box">
+                            <h4>Register / Add New Turf</h4>
+                            <input type="text" id="turf-owner-name" placeholder="Turf Venue Name" required>
+                            <input type="text" id="turf-owner-sport" placeholder="Sport (e.g. Football)" required>
+                            <input type="text" id="turf-owner-address" placeholder="Address (e.g. Pune Railway Station)" required>
+                            <input type="number" id="turf-owner-price" placeholder="Price per Hour (&#8377;)" required min="0" step="50">
+                            <input type="text" id="turf-owner-facilities" placeholder="Facilities (e.g. Floodlights, Parking)">
+                            <div style="display:flex; gap:10px;">
+                                <input type="text" id="turf-owner-open" placeholder="Open (e.g. 06:00)" value="06:00">
+                                <input type="text" id="turf-owner-close" placeholder="Close (e.g. 23:00)" value="23:00">
+                            </div>
+                            
+                            <label style="font-size:0.8rem; color:var(--muted); margin-top:6px;">Pinpoint Turf Location on Map or Paste Coordinates:</label>
+                            <input type="text" id="turf-owner-coords-paste" placeholder="Paste Lat, Lng (e.g. 18.5289, 73.8567)">
+                            <div style="display:flex; gap:10px;">
+                                <input type="text" id="turf-owner-lat" placeholder="Latitude (e.g. 18.5289)">
+                                <input type="text" id="turf-owner-lng" placeholder="Longitude (e.g. 73.8567)">
+                            </div>
+                            <p id="turf-owner-coords-hint" class="coord-hint">Click/drag marker on map below to auto-fill exact coordinates</p>
+                            <div id="turf-owner-form-map" class="map-canvas"></div>
+
+                            <button type="submit" style="margin-top:10px;">Register Turf</button>
+                        </form>
+
+                        <form id="block-slot-form" class="panel-box margin-top">
+                            <h4>Set Unavailable / Maintenance Slot</h4>
+                            <select id="block-turf-select" required></select>
+                            <input type="date" id="block-date" required>
+                            <input type="text" id="block-slot-time" placeholder="Slot (e.g. 14:00 - 15:00)" required>
+                            <button type="submit" class="ghost">Block Slot</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.js"></script>
+    <script src="js/app.js?v=10"></script>
+</body>
+</html>

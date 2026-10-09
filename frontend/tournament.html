@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="css/tournament.css?v=2" rel="stylesheet">
+</head>
+<body>
+    <!-- NEW FEATURE - DO NOT MODIFY EXISTING CODE -->
+    <main class="details-shell">
+        <header class="details-header">
+            <a href="index.html" class="back-link">Back to Discover</a>
+            <h1 id="tournament-title">Tournament Details</h1>
+            <p id="tournament-subtitle">Loading details...</p>
+        </header>
+
+        <section class="panel">
+            <h2>Exact Venue Location</h2>
+            <p><strong>Venue Name:</strong> <span id="venue-name">-</span></p>
+            <p><strong>Full Address:</strong> <span id="venue-address">-</span></p>
+            <div id="venue-map" class="map-canvas"></div>
+            <a id="open-google-maps" class="btn" href="#" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
+        </section>
+
+        <section class="panel">
+            <h2>Organizer Contact</h2>
+            <div id="contact-locked" class="muted">Login is required to view organizer contact details.</div>
+            <div id="contact-card" class="hidden">
+                <p><strong>Organizer Name:</strong> <span id="org-name">-</span></p>
+                <p><strong>Phone:</strong> <span id="org-phone">-</span></p>
+                <p><strong>Email:</strong> <span id="org-email">-</span></p>
+                <p><strong>Status:</strong> <span id="org-verified">Not verified</span></p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Comments</h2>
+            <form id="comment-form" class="comment-form">
+                <textarea id="comment-text" rows="4" placeholder="Write a comment..." required></textarea>
+                <button type="submit" class="btn">Post Comment</button>
+            </form>
+            <p id="comment-message" class="muted"></p>
+            <div id="comments-list" class="comments-list"></div>
+        </section>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/app.js?v=4"></script>
+    <script src="js/tournament.js?v=2"></script>
+</body>
+</html>
